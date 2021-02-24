@@ -26,106 +26,165 @@
           </div>
         </form>
 
-        <div class="btn-group-vertical col-10">
-          <button class="btn btn-outline-secondary">City</button>
-          <button class="btn btn-outline-secondary">City</button>
-          <button class="btn btn-outline-secondary">City</button>
-          <button class="btn btn-outline-secondary">City</button>
-        </div>
+        <div class="btn-group-vertical col-10" id="cities"></div>
       </div>
-      <div class="col-md-8 bg-light">
+      <div class="col-md-8">
 
-        <div class="card big-card">
-          <div class="card-body">
-            <h1 class="display-4">City Name (Date) Icon</h1>
-            <p>Temperature: 70 &#8457;</p>
-            <p>Humidity: 15%</p>
-            <p>Wind Speed: 2 MPH</p>
-            <p>UV Index: <span class="bg-danger">5.2</span></p>
-          </div>
+        <div id="dailyWeather">
+          <!-- <div class="card big-card">
+            <div class="card-body">
+              <h1 class="display-4">City Name (Date) Icon</h1>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+              <p>Wind Speed: 2 MPH</p>
+              <p>UV Index: <span class="text-white bg-danger">5.2</span></p>
+            </div>
+          </div> -->
         </div>
 
-        <h1 class="display-4">Forecast:</h1>
-
-        <div class="card-group">
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <h3>Date</h3>
-              <p>Icon</p>
-              <p>Temperature: 70 &#8457;</p>
-              <p>Humidity: 15%</p>
-            </div>
-          </div>
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <h3>Date</h3>
-              <p>Icon</p>
-              <p>Temperature: 70 &#8457;</p>
-              <p>Humidity: 15%</p>
-            </div>
-          </div>
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <h3>Date</h3>
-              <p>Icon</p>
-              <p>Temperature: 70 &#8457;</p>
-              <p>Humidity: 15%</p>
-            </div>
-          </div>
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <h3>Date</h3>
-              <p>Icon</p>
-              <p>Temperature: 70 &#8457;</p>
-              <p>Humidity: 15%</p>
-            </div>
-          </div>
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <h3>Date</h3>
-              <p>Icon</p>
-              <p>Temperature: 70 &#8457;</p>
-              <p>Humidity: 15%</p>
-            </div>
-          </div>
+        <div id="fore">
+          <!-- <h1 class="display-4">Forecast:</h1> -->
         </div>
+
+        <div class="card-group" id="futureWeather">
+          <!-- <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div> -->
+        </div>
+
       </div>
     </div>
   </div>
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    // fc89c9f101565c7713dd9b31eada8d80
+    // API key: fc89c9f101565c7713dd9b31eada8d80
+    let cityList = JSON.parse(localStorage.getItem('cityList')) || []
 
-    let cityName = ""
+    cityList.forEach(elem => {
+      document.getElementById('cities').innerHTML += `
+      <button class="btn btn-outline-secondary cityButton">${elem}</button>
+      `
+    })    
 
-    // document.getElementById('search').addEventListener('click', event => {
+    let page_render = (cityName) => {
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
+        .then(res => {
+          let weather = res.data
+          let lati = res.data.coord.lat
+          let long = res.data.coord.lon
 
-    // })
+          document.getElementById('dailyWeather').innerHTML = `
+            <div class="card big-card">
+              <div class="card-body">
+                <h1 class="display-4">${weather.name} (Date) <img src="http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png" alt="${weather.weather[0].description}"></h1>
+                <p>Temperature: ${weather.main.temp} &#8457;</p>
+                <p>Humidity: ${weather.main.humidity}%</p>
+                <p>Wind Speed: ${weather.wind.speed} MPH</p>
+                <p>UV Index: <span class="text-white" id="uv"></span></p>
+              </div>
+            </div>
+          `
 
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
-      .then(res => {
-        let weather = res
-        let lati = res.data.coord.lat
-        let long = res.data.coord.lon
-        console.log(lati)
-        console.log(long)
-        console.log(weather)
-        // return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lati}&lon=${long}&exclude=current,minutely,hourly,alerts&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
+          return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lati}&lon=${long}&exclude=current,minutely,hourly,alerts&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
+        })
+        .catch(err => { console.error(err) })
+        .then(res => {
+          let daily = res.data.daily
+
+          let uv_index = document.getElementById('uv')
+          uv_index.textContent = ` ${daily[0].uvi} `
+
+          if (parseFloat(daily[0].uvi) >= 8) {
+            uv_index.classList.add('bg-danger')
+          } else if (parseFloat(daily[0].uvi) >= 6) {
+            uv_index.classList.add('bg-warning')
+          } else if (parseFloat(daily[0].uvi) >= 3) {
+            uv_index.classList.add('bg-success')
+          } else {
+            uv_index.classList.add('bg-info')
+          }
+
+          document.getElementById('fore').innerHTML = `<h1 class="display-4">Forecast:</h1>`
+          document.getElementById('futureWeather').innerHTML = ''
+
+
+          for (let i = 1; i < 6; i++) {
+            document.getElementById('futureWeather').innerHTML += `
+              <div class="card text-white bg-primary">
+                <div class="card-body">
+                  <h3>Date</h3>
+                  <p class="text-center"><img src="http://openweathermap.org/img/wn/${daily[i].weather[0].icon}@2x.png" alt="${daily[i].weather[0].description}"></p>
+                  <p>Temperature: ${daily[i].temp.day} &#8457;</p>
+                  <p>Humidity: ${daily[i].humidity}%</p>
+                </div>
+              </div>
+             `
+          }
+        })
+        .catch(err => { console.error(err) })
+    }
+
+    document.getElementById('search').addEventListener('click', event => {
+      event.preventDefault()
+      let cityName = document.getElementById('citySearch').value
+      cityList.push(cityName)
+      localStorage.setItem('cityList', JSON.stringify(cityList))
+
+      document.getElementById('cities').innerHTML = ''
+      cityList.forEach(elem => {
+        document.getElementById('cities').innerHTML += `
+        <button class="btn btn-outline-secondary cityButton">${elem}</button>
+        `
       })
-      .catch(err => {console.error(err)})
-      // .then(res => {
-      //   let daily = res
-      //   console.log(daily)
-      // })
-      // .catch(err => { console.error(err) })
+      page_render(cityName)
+      document.getElementById('citySearch').value = ''
+    })
 
-
-
-
+    document.addEventListener('click', event => {
+      if(event.target.classList.contains('cityButton')){
+        page_render(event.target.textContent)
+      }
+    })
 
 
 
