@@ -7,10 +7,92 @@
   <title>Weather Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  
+
+  <div class="container-fluid text-white bg-dark banner">
+    <h1 class="display-3 text-center">Weather Dashboard</h1>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <form class="search-bar">
+          <label for="citySearch">Search City:</label>
+          <div class="input-group col-10">
+            <input type="text" name="citySearch" id="citySearch" class="form-control">
+            <button type="submit" class="btn btn-outline-dark" id="search">Search</button>
+          </div>
+        </form>
+
+        <div class="btn-group-vertical col-10">
+          <button class="btn btn-outline-secondary">City</button>
+          <button class="btn btn-outline-secondary">City</button>
+          <button class="btn btn-outline-secondary">City</button>
+          <button class="btn btn-outline-secondary">City</button>
+        </div>
+      </div>
+      <div class="col-md-8 bg-light">
+
+        <div class="card big-card">
+          <div class="card-body">
+            <h1 class="display-4">City Name (Date) Icon</h1>
+            <p>Temperature: 70 &#8457;</p>
+            <p>Humidity: 15%</p>
+            <p>Wind Speed: 2 MPH</p>
+            <p>UV Index: <span class="bg-danger">5.2</span></p>
+          </div>
+        </div>
+
+        <h1 class="display-4">Forecast:</h1>
+
+        <div class="card-group">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3>Date</h3>
+              <p>Icon</p>
+              <p>Temperature: 70 &#8457;</p>
+              <p>Humidity: 15%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -18,7 +100,11 @@
   <script>
     // fc89c9f101565c7713dd9b31eada8d80
 
-    let cityName = "Los Angeles"
+    let cityName = ""
+
+    // document.getElementById('search').addEventListener('click', event => {
+
+    // })
 
     axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
       .then(res => {
@@ -28,14 +114,25 @@
         console.log(lati)
         console.log(long)
         console.log(weather)
-        return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lati}&lon=${long}&exclude=current,minutely,hourly,alerts&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
+        // return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lati}&lon=${long}&exclude=current,minutely,hourly,alerts&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
       })
       .catch(err => {console.error(err)})
-      .then(res => {
-        let daily = res
-        console.log(daily)
-      })
-      .catch(err => { console.error(err) })
+      // .then(res => {
+      //   let daily = res
+      //   console.log(daily)
+      // })
+      // .catch(err => { console.error(err) })
+
+
+
+
+
+
+
+
+
+
+
 
       // console.log(lati)
       // console.log(long)
