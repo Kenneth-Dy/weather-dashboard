@@ -8,7 +8,7 @@ cityList.forEach(elem => {
       `
 })
 
-let page_render = (cityName) => {
+const page_render = (cityName) => {
   axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
     .then(res => {
       let weather = res.data
@@ -30,7 +30,12 @@ let page_render = (cityName) => {
 
       return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lati}&lon=${long}&exclude=current,minutely,hourly,alerts&units=imperial&appid=fc89c9f101565c7713dd9b31eada8d80`)
     })
-    .catch(err => { console.error(err) })
+    .catch(err => { 
+      console.error(err)
+      cityList.pop()
+      list_render()
+      document.getElementById('citySearch').value = `*error* - can't find city`
+    })
     .then(res => {
       let daily = res.data.daily
 
@@ -67,19 +72,22 @@ let page_render = (cityName) => {
     .catch(err => { console.error(err) })
 }
 
-document.getElementById('search').addEventListener('click', event => {
-  event.preventDefault()
-  let cityName = document.getElementById('citySearch').value
-  cityList.push(cityName)
+const list_render = () => {
   localStorage.setItem('cityList', JSON.stringify(cityList))
 
   document.getElementById('cities').innerHTML = ''
   cityList.forEach(elem => {
     document.getElementById('cities').innerHTML += `
-        <button class="btn btn-outline-secondary cityButton">${elem}</button>
-        `
+      <button class="btn btn-outline-secondary cityButton">${elem}</button>`
   })
+}
+
+document.getElementById('search').addEventListener('click', event => {
+  event.preventDefault()
+  let cityName = document.getElementById('citySearch').value
+  cityList.push(cityName)
   page_render(cityName)
+  list_render()
   document.getElementById('citySearch').value = ''
 })
 
